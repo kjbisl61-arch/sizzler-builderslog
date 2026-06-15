@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sizzler Builder's Log</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: sans-serif; background: #0A0E1A; color: #E8F4FD; min-height: 100vh; padding-bottom: 60px; }
+    .wrap { max-width: 860px; margin: 0 auto; }
+
+    .header { background: linear-gradient(135deg, #0A2A4A, #0A0E1A); padding: 18px 20px 14px; border-bottom: 1px solid #1E3A5F; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px; }
+    .header h1 { font-size: 1.4rem; font-weight: 700; color: #00D4FF; text-shadow: 0 0 20px #00D4FF55; margin-bottom: 4px; }
+    .header p { font-size: 0.85rem; color: #8899AA; font-style: italic; }
+    .header-stat { background: #111827; border: 1px solid #1E3A5F; border-radius: 8px; padding: 8px 14px; text-align: center; }
+    .header-stat .label { font-size: 0.68rem; color: #8899AA; text-transform: uppercase; letter-spacing: 0.3px; }
+    .header-stat .value { font-size: 1.2rem; font-weight: 700; color: #00D4FF; margin-top: 2px; text-shadow: 0 0 10px #00D4FF55; }
+
+    .body { padding: 20px; }
+
+    .alert { background: #0A2A1A; border-left: 3px solid #00FF88; border-radius: 0 6px 6px 0; padding: 10px 14px; margin-bottom: 16px; font-size: 0.85rem; color: #00FF88; }
+
+    .btn-primary { padding: 9px 20px; border-radius: 6px; background: #00D4FF; color: #0A0E1A; border: none; cursor: pointer; font-size: 0.82rem; font-weight: 700; font-family: inherit; display: inline-block; margin-bottom: 16px; }
+    .btn-cancel { padding: 9px 20px; border-radius: 6px; background: transparent; color: #8899AA; border: 1px solid #1E3A5F; cursor: pointer; font-size: 0.82rem; font-weight: 700; font-family: inherit; display: inline-block; margin-bottom: 16px; }
+    .btn-ghost { padding: 5px 12px; border-radius: 6px; background: transparent; color: #8899AA; border: 1px solid #1E3A5F; cursor: pointer; font-size: 0.72rem; font-weight: 700; font-family: inherit; }
+    .btn-sm-coral { padding: 4px 10px; border-radius: 6px; background: transparent; color: #FF6B6B; border: 1px solid #FF6B6B44; cursor: pointer; font-size: 0.7rem; font-weight: 700; font-family: inherit; }
+
+    .card { background: #111827; border: 1px solid #1E3A5F; border-radius: 8px; padding: 14px 16px; margin-bottom: 12px; }
+    .card.cyan { border-left: 3px solid #00D4FF; }
+    .card.coral { border-left: 3px solid #FF6B6B; }
+    .card.green { border-left: 3px solid #00FF88; }
+    .card.sky { border-left: 3px solid #48CAE4; }
+    .card.gold { border-left: 3px solid #FFD700; }
+    .card-title { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: #8899AA; margin-bottom: 10px; }
+
+    label { font-size: 0.75rem; font-weight: 700; color: #8899AA; display: block; margin-bottom: 4px; }
+    input[type=text], textarea, select { width: 100%; padding: 9px 12px; border: 1px solid #1E3A5F; border-radius: 6px; font-size: 0.85rem; background: #0A0E1A; color: #E8F4FD; font-family: inherit; outline: none; margin-bottom: 10px; box-sizing: border-box; }
+    input[type=text]:focus, textarea:focus, select:focus { border-color: #00D4FF; }
+    textarea { resize: vertical; min-height: 64px; }
+
+    .tag { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; margin-right: 4px; }
+    .tag.green { background: #0A2A1A; color: #00FF88; border: 1px solid #00FF8844; }
+    .tag.cyan { background: #0A2A3A; color: #00D4FF; border: 1px solid #00D4FF44; }
+    .tag.coral { background: #2A0A0A; color: #FF6B6B; border: 1px solid #FF6B6B44; }
+    .tag.gold { background: #2A2000; color: #FFD700; border: 1px solid #FFD70044; }
+    .tag.sky { background: #0A1A2A; color: #48CAE4; border: 1px solid #48CAE444; }
+
+    .log-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 10px; }
+    .log-focus { font-size: 0.95rem; font-weight: 700; color: #00D4FF; flex: 1; }
+    .log-section { margin-bottom: 8px; }
+    .log-section-title { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: #8899AA; margin-bottom: 3px; }
+    .log-section-text { font-size: 0.85rem; color: #E8F4FD; line-height: 1.6; }
+    .log-footer { margin-top: 10px; padding-top: 10px; border-top: 1px solid #1E3A5F; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+
+    .divider { height: 1px; background: #1E3A5F; margin: 4px 0 10px; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <div>
+      <h1>Sizzler Builder's Log</h1>
+      <p>Wave, Road & Everything Between</p>
+    </div>
+    <div class="header-stat">
+      <div class="label">Sessions logged</div>
+      <div class="value" id="session-count">0</div>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <div class="alert">
+      <strong>IP Protection active.</strong> Every entry is timestamped and tied to a Git commit — creating a permanent, verifiable record of your build history.
+    </div>
+
+    <button class="btn-primary" id="toggle-btn" onclick="toggleForm()">+ Log This Session</button>
+
+    <!-- Form -->
+    <div id="log-form" style="display:none">
+      <div class="card cyan">
+        <div class="card-title" id="form-date">New session log</div>
+
+        <label>Session focus *</label>
+        <input type="text" id="f-focus" placeholder="What was today's single lane?" />
+
+        <label>Content pillar</label>
+        <select id="f-pillar">
+          <option value="build">Build</option>
+          <option value="ocean">Ocean</option>
+          <option value="road">Road</option>
+          <option value="human">Human</option>
+        </select>
+
+        <label>What was built / completed</label>
+        <textarea id="f-built" placeholder="Describe what you built or completed this session..."></textarea>
+
+        <label>Problems solved</label>
+        <textarea id="f-problems" placeholder="What problems did you encounter or solve?"></textarea>
+
+        <label>Next steps</label>
+        <textarea id="f-next" placeholder="What's queued for next session?"></textarea>
+
+        <label>Git commit reference (IP timestamp)</label>
+        <input type="text" id="f-commit" placeholder="Paste commit hash or repo/description..." />
+
+        <button class="btn-primary" onclick="saveLog()">Save Log Entry</button>
+        <button class="btn-cancel" onclick="toggleForm()" style="margin-left:8px">Cancel</button>
+      </div>
+    </div>
+
+    <!-- Log entries -->
+    <div id="log-entries"></div>
+
+  </div>
+</div>
+
+<script>
+var logs = [
+  {
+    id: 1,
+    date: "14 Jun 2026",
+    focus: "Jarvis V3 deployment — Bali",
+    pillar: "build",
+    built: "Full 7-tab Jarvis V3 live on Vercel. Tabs: Org Chart, Today, Ideas, Weekly, Monthly, Modules, Website. All working. Builder's Log and Control Centre also deployed.",
+    problems: "GitHub src folder structure causing build failures. File naming duplicates. Tab click events not firing in widget. Resolved by: root-level HTML file structure, direct upload method, clean repo.",
+    next: "Dark cockpit rebuild for all tools. Architecture Blueprint. Folder structure and Master Index.",
+    commit: "jarvis-v3 — sizzler-jarvis-v3.vercel.app"
+  },
+  {
+    id: 2,
+    date: "15 Jun 2026",
+    focus: "Architecture Blueprint + Folder Structure + Master Index",
+    pillar: "build",
+    built: "Sizzler Architecture Blueprint v1.0 (text + HTML). Claude Development Vision v1.0. README.html. MasterIndex.html with live folder links and document register. sizzlerwaveandroad folder structure (6 folders). Two brand kits rule established and locked.",
+    problems: "Control Centre Vercel deployment still pending — running as local HTML file. Builder's Log still in old brand kit colours — rebuild queued.",
+    next: "Rebuild Builder's Log and Jarvis V3 in dark cockpit Jarvis brand kit. Deploy Control Centre to Vercel. Populate folder structure with existing documents.",
+    commit: "Local files — saved to OneDrive sizzlerwaveandroad/01_Foundation"
+  }
+];
+
+var expanded = null;
+
+function getDate() {
+  return new Date().toLocaleDateString("en-NZ", { day:"numeric", month:"short", year:"numeric" });
+}
+
+function pillarTag(p) {
+  var m = { build:"cyan", ocean:"sky", road:"gold", human:"coral" };
+  var labels = { build:"Build", ocean:"Ocean", road:"Road", human:"Human" };
+  return '<span class="tag ' + (m[p]||"cyan") + '">' + (labels[p]||p) + '</span>';
+}
+
+function toggleForm() {
+  var form = document.getElementById("log-form");
+  var btn = document.getElementById("toggle-btn");
+  var dateEl = document.getElementById("form-date");
+  if (form.style.display === "none") {
+    form.style.display = "block";
+    btn.textContent = "Cancel";
+    btn.className = "btn-cancel";
+    dateEl.textContent = "New session log — " + getDate();
+  } else {
+    form.style.display = "none";
+    btn.textContent = "+ Log This Session";
+    btn.className = "btn-primary";
+  }
+}
+
+function saveLog() {
+  var focus = document.getElementById("f-focus").value.trim();
+  if (!focus) { alert("Please enter a session focus."); return; }
+  var log = {
+    id: Date.now(),
+    date: getDate(),
+    focus: focus,
+    pillar: document.getElementById("f-pillar").value,
+    built: document.getElementById("f-built").value.trim(),
+    problems: document.getElementById("f-problems").value.trim(),
+    next: document.getElementById("f-next").value.trim(),
+    commit: document.getElementById("f-commit").value.trim()
+  };
+  logs.unshift(log);
+  document.getElementById("f-focus").value = "";
+  document.getElementById("f-built").value = "";
+  document.getElementById("f-problems").value = "";
+  document.getElementById("f-next").value = "";
+  document.getElementById("f-commit").value = "";
+  toggleForm();
+  render();
+}
+
+function deleteLog(id) {
+  logs = logs.filter(function(l) { return l.id !== id; });
+  render();
+}
+
+function toggleExpand(id) {
+  expanded = expanded === id ? null : id;
+  render();
+}
+
+function render() {
+  document.getElementById("session-count").textContent = logs.length;
+  var container = document.getElementById("log-entries");
+  if (logs.length === 0) {
+    container.innerHTML = '<p style="font-size:0.85rem;opacity:0.5;text-align:center;margin-top:40px">No sessions logged yet. Hit the button above to start.</p>';
+    return;
+  }
+  var html = "";
+  for (var i = 0; i < logs.length; i++) {
+    var log = logs[i];
+    var isOpen = expanded === log.id;
+    var borderColor = log.pillar === "ocean" ? "#48CAE4" : log.pillar === "human" ? "#FF6B6B" : log.pillar === "road" ? "#FFD700" : "#00D4FF";
+    html += '<div class="card" style="border-left:3px solid ' + borderColor + '">';
+    html += '<div class="log-header">';
+    html += '<div class="log-focus">' + log.focus + '</div>';
+    html += '<button class="btn-ghost" onclick="toggleExpand(' + log.id + ')">' + (isOpen ? "Collapse" : "Expand") + '</button>';
+    html += '</div>';
+    html += '<div>' + pillarTag(log.pillar) + ' <span class="tag cyan">' + log.date + '</span></div>';
+    if (isOpen) {
+      html += '<div class="divider"></div>';
+      if (log.built) { html += '<div class="log-section"><div class="log-section-title">Built / completed</div><div class="log-section-text">' + log.built + '</div></div>'; }
+      if (log.problems) { html += '<div class="log-section"><div class="log-section-title">Problems solved</div><div class="log-section-text">' + log.problems + '</div></div>'; }
+      if (log.next) { html += '<div class="log-section"><div class="log-section-title">Next steps</div><div class="log-section-text">' + log.next + '</div></div>'; }
+      html += '<div class="log-footer">';
+      if (log.commit) { html += '<span class="tag gold">Git: ' + log.commit + '</span>'; } else { html += '<span></span>'; }
+      html += '<button class="btn-sm-coral" onclick="deleteLog(' + log.id + ')">Delete</button>';
+      html += '</div>';
+    }
+    html += '</div>';
+  }
+  container.innerHTML = html;
+}
+
+render();
+</script>
+
+</body>
+</html>
